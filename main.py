@@ -3,6 +3,7 @@
 from flask import Flask
 from flask import request
 from google.cloud import firestore
+import logging
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
@@ -18,11 +19,11 @@ def process():
         #get from firestore with sql query
         return str(db.collection(u'avalanches').where(u'size', u'==', u'1'))
 
-    if (request.method == 'POST'):
+    elif (request.method == 'POST'):
         #store data in firestore
-        data = request.form
+        data = request.get_json()
         db.collection(u'avalanches').document(u'dummy').set(data)
-        return 'data posted'
+        return str(type(data)) + str(data)
 
 
 
